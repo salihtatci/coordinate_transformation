@@ -2,7 +2,6 @@
 
 Python + **Kivy** ile geliştirilmiş, internet bağlantısı olmadan hesaplama yapabilen **Windows masaüstü** koordinat dönüştürücüsü. Bu depo, öğretim ve deneysel kullanım içindir; resmî jeodezik üretimde kullanılmadan önce dönüşüm parametreleri ve sonuçları yetkili kaynaklarla doğrulanmalıdır.
 
-![Uygulamadan ekran görüntüsü](docs/ornek_ekran.png)
 
 ## Yeni başlayanlar: Windows'ta kurulum (5 adım)
 
