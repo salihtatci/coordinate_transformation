@@ -86,8 +86,3 @@ Mevcut testler ileri–ters kapanmayı, EPSG 7 parametre örneğini, bazı matem
 - [Kivy dokümantasyonu](https://kivy.org/doc/stable/)
 - Matematik ve arayüz açıklamaları için [`OGREN.md`](OGREN.md) dosyasına bakın.
 
-## GitHub'a yükleyen kişi için
-
-Bu depoda `.venv`, APK, derleme çıktısı veya özel bilgisayar yolları bulunmamalıdır. GitHub'da **New repository** oluşturup `GEO532` adını verebilir; zip dosyasının **içindeki dosyaları** yükleyebilirsiniz. Başkası uygulamayı **Code → Download ZIP** ile alıp yukarıdaki adımları uygulayabilir.
-
-**Lisans:** Bu pakete lisans eklenmedi. Başkalarının kodu yeniden kullanmasına/yayımlamasına hangi koşullarda izin vereceğinize karar verirseniz ayrıca uygun bir `LICENSE` dosyası ekleyin.
