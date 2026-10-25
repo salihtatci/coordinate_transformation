@@ -266,4 +266,4 @@ Uygulama numpy vb. kullanmadığı için ek bağımlılık gerekmez ve telefonda
 
 ---
 
-**Geliştirici:** Salih ([@salihtatci](https://github.com/salihtatci)) — İstanbul Teknik Üniversitesi, Geomatik Mühendisliği
+**Geliştirici:** Salih ([@salihtatci](https://github.com/salihtatci)) — İstanbul Teknik Üniversitesi, Geomatik Mühendisi, Elektrik Mühendisi
