@@ -95,7 +95,7 @@ bilinen dönüşüm). BFS ile en kısa yol bulunur, örn.
 class KoordinatApp(App):        # 1) Uygulama
     def build(self):
         Builder.load_string(KV) # 2) Görünüm KV dilinde
-        return AnaPanel()       # 3) Ana widget (sekmeler)
+        return AnaPanel()       # 3) Ana widget (üst çubuk + sekmeler)
 ```
 
 KV dilinden bir parça:
@@ -112,6 +112,23 @@ Etiket:
 
 Son satır Kivy'nin en güçlü özelliği: **bağlama (binding)**. `t2_tip` değişince etiket kendiliğinden değişir.
 
+### Tema nasıl çalışıyor?
+
+Renkler `Tema` sınıfında **token** olarak durur (`background`, `card`, `border`, `primary` …), web sürümündeki CSS değişkenlerinin aynısı. KV'de `app.t.primary` diye kullanılır:
+
+```yaml
+<Kart@BoxLayout>:
+    canvas.before:
+        Color:
+            rgba: app.t.card          # tema değişince kart rengi kendiliğinden değişir
+        RoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [dp(14)]
+```
+
+Koyu temaya geçince `Tema.uygula(True)` bütün token'ları değiştirir; bağlama sayesinde bütün arayüz yeniden boyanır. `<-Giris@TextInput>` kuralındaki `-` öneki, Kivy'nin kendi (resimli) kutu çizimini bırakıp kendi yuvarlak köşeli çizimimizi kullanmamızı sağlar.
+
 ---
 
 ## 6. Android'e paketleme (APK) — internetsiz telefonda çalıştırmak için
@@ -124,7 +141,7 @@ buildozer init                  # buildozer.spec oluşur
 # buildozer.spec içinde:
 #   title = Koordinat Donusum
 #   requirements = python3,kivy
-#   source.include_exts = py,png,kv
+#   source.include_exts = py,png,kv,ttf
 buildozer -v android debug      # bin/ klasöründe .apk oluşur
 ```
 
@@ -136,7 +153,7 @@ buildozer -v android debug      # bin/ klasöründe .apk oluşur
 
 1. Ankara noktasını GRS80 ve WGS84 ile Kartezyen'e çevir; X, Y, Z farkını mm cinsinden yorumla.
 2. ITRF2020 → ITRF96 dönüşümünü **IERS 14 p.** ve **7 p. hızsız** modelle 2025.0 epoğunda yap; fark kaç cm?
-3. `Model Parametreleri` → *EPSG örneği* düğmesine bas; sonucu EPSG 7-2 dokümanındaki
+3. Datum sekmesindeki *Model parametreleri* kartında *EPSG örneği* düğmesine bas; sonucu EPSG 7-2 dokümanındaki
    (3657660.78, 255778.43, 5201387.75) ile karşılaştır. Sonra konvansiyonu CF yap, ne değişti?
 4. `jeodezi.py` içine yeni bir elipsoit (örn. *Clarke 1880*) ekle; arayüzde kendiliğinden çıktığını gör.
 5. (İleri) `DONUSUMLER` sözlüğüne ITRF2014 → ITRF2000 parametrelerini ekle.

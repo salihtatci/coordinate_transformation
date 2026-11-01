@@ -10,8 +10,8 @@ Python + **Kivy** ile yazılmış, kurulumdan sonra **internet bağlantısı ger
 Proje, İTÜ Geomatik Mühendisliği yüksek lisans dersi (GEO532 — *Location Based Systems and Mobile Mapping Technologies*) kapsamında **öğretim ve deneysel kullanım** amacıyla geliştirilmiştir. Hesaplama çekirdeği yalnızca Python'un `math` modülünü kullanır (numpy yok), bu yüzden Android'e paketlemek de kolaydır.
 
 <p align="center">
-  <img src="docs/ekran_datum.png" width="49%" alt="Datum / Çerçeve sekmesi: WGS84 (G2139) → ITRF96 IERS 14 parametre dönüşümü">
-  <img src="docs/ekran_parametre.png" width="49%" alt="Model Parametreleri sekmesi: ED50 → WGS84 için EPSG:1784 Bursa-Wolf parametreleri otomatik dolduruldu">
+  <img src="docs/ekran_datum.png" width="49%" alt="Datum ve çerçeve sekmesi (açık tema): WGS84 (G2139) → ITRF96 IERS 14 parametre dönüşümü">
+  <img src="docs/ekran_parametre.png" width="49%" alt="Datum ve çerçeve sekmesi (koyu tema, dar pencere): ED50 → WGS84 için EPSG:1784 Bursa-Wolf parametreleri otomatik dolduruldu">
 </p>
 
 ---
@@ -123,7 +123,7 @@ python main.py
 
 ## Kullanım
 
-Uygulama dört sekmeden oluşur.
+Uygulama üç sekmeden oluşur. Arayüz, web sürümüyle ([new_coordinate_trans_web](https://github.com/salihtatci/new_coordinate_trans_web)) aynı shadcn/ui tasarım sistemini kullanır: Inter yazı tipi, Lucide ikonları, kartlar, açık / koyu / sistem teması (sağ üst; seçim hatırlanır). Pencere genişse giriş kartları solda, hesap raporu sağda durur; dar pencerede ve telefonda alt alta dizilir. Rapor kartındaki **Kopyala** düğmesi raporu panoya alır.
 
 ### 1. Coğrafi ⇄ Kartezyen
 
@@ -133,7 +133,7 @@ Uygulama dört sekmeden oluşur.
 
 Örnek (GRS80): φ = 39° 55′ 30.0″, λ = 32° 50′ 12.84″, h = 938 m → X = 4116037.2588 m, Y = 2656358.3524 m, Z = 4072204.7958 m
 
-### 2. Datum / Çerçeve
+### 2. Datum ve çerçeve
 
 1. **Kaynak sistem**, **hedef sistem** ve **dönüşüm modeli**ni seçin.
 2. IERS 14 parametre modelinde **ölçü epoğu t**'yi (ondalık yıl, örn. `2025.0`) girin.
@@ -141,14 +141,16 @@ Uygulama dört sekmeden oluşur.
 4. Çıktı; kullanılan parametreleri ve kaynağını, zincirdeki her adımı, hedef sistemdeki X, Y, Z ve φ, λ, h değerlerini, ayrıca kaymanın ENU bileşenlerini gösterir.
 5. **Kaynak ⇄ Hedef** düğmesi yönü çevirir; kayıtlı set ters yöndeyse kesin ters çözüm otomatik uygulanır.
 
-### 3. Model Parametreleri
+#### Model parametreleri kartı
+
+Datum sekmesinin altındaki açılır kapanır kart.
 
 - Seçilen (kaynak, hedef, model) için parametreler **otomatik doldurulur** ve salt okunurdur. Başlıkta parametrenin kaynağı (EPSG / IERS / EUREF), yönü, konvansiyonu ve epoğu yazar.
 - Kayıtlı set yoksa alanlar boş kalır ve dönüşüm **yapılmaz**.
 - Bursa-Wolf / Molodensky-Badekas için **Manuel parametre girişi** kutusunu işaretleyerek kendi parametrelerinizi girebilirsiniz. Birimler: T [m], D [ppm], R [yay saniyesi]. Konvansiyonu (PV/CF) ve gerekiyorsa **Ters yönde uygula** seçeneğini kendiniz belirleyin.
 - **Test örneği: EPSG 7-2** düğmesi, EPSG Guidance Note 7-2'deki WGS72 → WGS84 Bursa-Wolf örneğini manuel giriş olarak yükler; beklenen sonuç (3657660.78, 255778.43, 5201387.75) m'dir.
 
-### 4. Bilgi
+### 3. Bilgi
 
 Datum/çerçeve ile elipsoit farkı, IERS 14 parametre modeli, WGS84 gerçekleştirmeleri ve formüllerin kısa özeti.
 
@@ -198,7 +200,7 @@ Model kodları: `MODEL_IERS`, `MODEL_SABIT` (hızsız 7 p.), `MODEL_BW`, `MODEL_
 Windows'ta ikisini birden çalıştırmak için `TEST.bat` yeterlidir.
 
 - **`test_jeodezi.py`** — tüm elipsoitlerde ve iki yöntemle gidiş-dönüş kapanması; EPSG 7-2 Bursa-Wolf (PV/CF) ve Molodensky-Badekas (La Canoa) örnekleri; M-B (merkez = 0) ile Bursa-Wolf eşdeğerliği; WGS84–GRS80 farkı; ITRF zinciri gidiş-dönüşü; otomatik parametre seçimi, kesin ters yön, PV/CF korunumu ve IERS epok hesabı.
-- **`test_arayuz.py`** — Model Parametreleri sekmesinin kaynak/hedef/model/epok değiştikçe güncellenmesi, Kaynak ⇄ Hedef ters çözümü, manuel giriş ve EPSG test düğmesi.
+- **`test_arayuz.py`** — Model parametreleri kartının kaynak/hedef/model/epok değiştikçe güncellenmesi, Kaynak ⇄ Hedef ters çözümü, manuel giriş ve EPSG test düğmesi.
 
 > Testlerin geçmesi, tüm datum/epok dönüşümlerinin bağımsız dış referanslarla doğrulandığı anlamına gelmez.
 
@@ -217,6 +219,7 @@ coordinate_transformation/
 ├── BASLAT.bat           # Windows: uygulamayı başlat
 ├── TEST.bat             # Windows: tüm testleri çalıştır
 ├── OGREN.md             # Öğrenme rehberi: formüller, model seçimi, Kivy mantığı, APK
+├── fonts/               # Inter (OFL) ve Lucide ikonları (ISC), lisanslarıyla; internetsiz çalışır
 ├── docs/                # README ekran görüntüleri
 └── .gitignore
 ```
@@ -235,7 +238,7 @@ buildozer init
 # buildozer.spec içinde:
 #   title = Koordinat Donusum
 #   requirements = python3,kivy
-#   source.include_exts = py,png,kv
+#   source.include_exts = py,png,kv,ttf     (fonts/ klasöründeki yazı tipleri için ttf gerekli)
 buildozer -v android debug     # .apk dosyası bin/ klasöründe oluşur
 ```
 
