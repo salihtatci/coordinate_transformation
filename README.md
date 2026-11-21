@@ -195,14 +195,17 @@ Model kodları: `MODEL_IERS`, `MODEL_SABIT` (hızsız 7 p.), `MODEL_BW`, `MODEL_
 ```powershell
 .\.venv\Scripts\python.exe test_jeodezi.py   # hesap çekirdeği (Kivy gerekmez)
 .\.venv\Scripts\python.exe test_arayuz.py    # gerçek Kivy arayüzü, gizli pencerede
+.\.venv\Scripts\python.exe -m pip install pyproj   # yalnız PROJ karşılaştırması için, bir kez
+.\.venv\Scripts\python.exe test_proj.py       # çekirdeği PROJ ile bağımsız karşılaştırır
 ```
 
-Windows'ta ikisini birden çalıştırmak için `TEST.bat` yeterlidir.
+Windows'ta hepsini birden çalıştırmak için `TEST.bat` yeterlidir (pyproj kurulu değilse PROJ testi atlanır).
 
 - **`test_jeodezi.py`** — tüm elipsoitlerde ve iki yöntemle gidiş-dönüş kapanması; EPSG 7-2 Bursa-Wolf (PV/CF) ve Molodensky-Badekas (La Canoa) örnekleri; M-B (merkez = 0) ile Bursa-Wolf eşdeğerliği; WGS84–GRS80 farkı; ITRF zinciri gidiş-dönüşü; otomatik parametre seçimi, kesin ters yön, PV/CF korunumu ve IERS epok hesabı.
 - **`test_arayuz.py`** — Model parametreleri kartının kaynak/hedef/model/epok değiştikçe güncellenmesi, Kaynak ⇄ Hedef ters çözümü, manuel giriş ve EPSG test düğmesi.
+- **`test_proj.py`** — Aynı hesapları [PROJ](https://proj.org/) ile (pyproj üzerinden) yapıp karşılaştırır: Türkiye'de beş noktada coğrafi ⇄ kartezyen (iteratif ve Bowring), EPSG GN 7-2 Bursa-Wolf (PV/CF), ED50 → WGS84 (EPSG:1784), ITRF2020 → geçmiş ITRF'ler ve ITRF2014 → ITRF2008 (IERS 14 p., üç epokta) ve ITRF2014 → ETRF2000 (EPSG:8405). İzin verilen fark 1 µm'dir. Ayrıca Güllü vd. (2018) çalışmasındaki 15 TUTGA noktasında EPSG:1784 ile ITRF96 → ED50 dönüşümünün yatay karesel ortalama hatasını (0,37 m) raporlar.
 
-> Testlerin geçmesi, tüm datum/epok dönüşümlerinin bağımsız dış referanslarla doğrulandığı anlamına gelmez.
+> `test_jeodezi.py` çekirdeğin kendi içinde tutarlı olduğunu denetler; parametre tablosundaki bir yanlışı (yanlış epok, işaret ya da birim) ancak `test_proj.py` gibi bağımsız bir karşılaştırma yakalar. ITRF2014 → ETRF2000 parametreleri bu karşılaştırmayla düzeltilmiştir (2000,0 epoğundaki değerler t₀ = 2010,0 ile kullanılıyordu; 2025,0'da 0,226 m fark).
 
 ---
 
@@ -214,6 +217,7 @@ coordinate_transformation/
 ├── jeodezi.py           # Hesaplama çekirdeği: elipsoitler, Helmert modelleri, sistem grafı, parametre DB
 ├── test_jeodezi.py      # Çekirdek testleri (EPSG örnekleri, kapanma, otomatik parametre)
 ├── test_arayuz.py       # Arayüz testleri (gizli Kivy penceresi)
+├── test_proj.py         # PROJ (pyproj) ile bağımsız karşılaştırma; pyproj yoksa atlanır
 ├── requirements.txt     # kivy[base]>=2.3
 ├── KURULUM.bat          # Windows: .venv oluştur + bağımlılıkları kur
 ├── BASLAT.bat           # Windows: uygulamayı başlat
