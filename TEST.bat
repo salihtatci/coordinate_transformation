@@ -15,7 +15,11 @@ echo ===== Arayuz testleri (test_arayuz.py) =====
 ".venv\Scripts\python.exe" test_arayuz.py
 set "HATA2=%errorlevel%"
 echo.
-if "%HATA1%%HATA2%"=="00" (
+echo ===== PROJ karsilastirmasi (test_proj.py) =====
+".venv\Scripts\python.exe" test_proj.py
+set "HATA3=%errorlevel%"
+echo.
+if "%HATA1%%HATA2%%HATA3%"=="000" (
   echo Tum testler gecti.
 ) else (
   echo En az bir test BASARISIZ. Yukaridaki ciktiyi inceleyin.
